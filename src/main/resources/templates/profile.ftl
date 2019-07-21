@@ -23,21 +23,7 @@
 <div class="site-wrap">
 
     <a href="#" class="offcanvas-toggle js-offcanvas-toggle">Menu</a>
-    <div class="offcanvas_menu" id="offcanvas_menu">
-        <ul class="mb-5">
-            <li class="active"><a href="/profile">Bio</a></li>
-            <li><a href="/gallery">Gallery</a></li>
-            <li><a href="resume.html">Resume</a></li>
-            <li><a href="/logout">Log out</a></li>
-        </ul>
-
-
-
-        </br><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-
-    </div>
+    <#include "menu.ftl">
 
     <aside style="background-image: url(../images/profile_big.jpg);"></aside>
     <main>

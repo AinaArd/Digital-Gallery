@@ -15,20 +15,18 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "\"user\"", schema = "public")
-public class User {
+public class Gallery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
-    private String login;
-    private String hashPassword;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @ManyToOne
+    @JoinColumn(name = "ownerId")
+    private User owner;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "gallery")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Gallery> galleries;
+    private List<Photo> photos;
 }

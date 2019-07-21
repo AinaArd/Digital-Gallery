@@ -47,15 +47,16 @@
 
                     <div class="form-group">
                         <label for="remember-me" class="remember"><span><span></span></span>Remember me
-                        </label>
                         <input type="checkbox" name="remember-me" id="remember-me" class="agree-term"/>
+                        </label>
                     </div>
                     <div class="p-t-30">
                         <button class="btn btn--radius btn--green" type="submit">Sign in</button>
                     </div>
                 </form>
 
-                <a href="/signUp" class="signup-image-link">Create an account</a>
+                <br>
+                <a href="/signUp" class="btn btn--radius btn--green">Create an account</a>
             </div>
         </div>
     </div>

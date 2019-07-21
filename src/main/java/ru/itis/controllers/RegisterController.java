@@ -28,7 +28,7 @@ public class RegisterController {
     }
 
     @PostMapping("/signUp")
-    public String register(ModelMap model, RegisterForm registerForm) {
+    public String register(RegisterForm registerForm) {
         service.signUp(registerForm);
         return "redirect:/login";
     }
