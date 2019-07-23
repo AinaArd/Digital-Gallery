@@ -8,6 +8,8 @@ import ru.itis.models.Photo;
 import ru.itis.repositories.PhotoRepository;
 import ru.itis.utils.FileDownloader;
 
+import java.util.Optional;
+
 @Service
 public class PhotoServiceImpl implements PhotoService {
 
@@ -25,7 +27,23 @@ public class PhotoServiceImpl implements PhotoService {
                 .description(photoForm.getDescription())
                 .photoPath(photoPath)
                 .gallery(gallery)
+                .likes(0)
                 .build();
         return photoRepository.save(photo);
+    }
+
+    @Override
+    public Optional<Photo> findPhotoById(Long photoId) {
+        return photoRepository.findById(photoId);
+    }
+
+    @Override
+    public void increaseLikes(Long photoId) {
+        photoRepository.increaseLikes(photoId);
+    }
+
+    @Override
+    public void deletePhoto(Photo photo) {
+        photoRepository.delete(photo);
     }
 }

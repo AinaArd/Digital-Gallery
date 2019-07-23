@@ -26,7 +26,6 @@
     <a href="#" class="offcanvas-toggle js-offcanvas-toggle">Menu</a>
     <#include "menu.ftl">
 
-    <aside style="background-image: url(img/profile_big.jpg);"></aside>
     <main>
         <a href="index.html" class="home-button"><span class="fa fa-home"></span></a>
         <h1 class="mb-5">Portfolio</h1>
@@ -80,9 +79,9 @@
 <!-- loader -->
 <div id="loader" class="show fullscreen">
     <svg class="circular" width="48px" height="48px">
-        <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
+        <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"></circle>
         <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
-                stroke="#f4b214"/>
+                stroke="#f4b214"></circle>
     </svg>
 </div>
 
@@ -93,6 +92,7 @@
 <script src="/js/jquery.waypoints.min.js"></script>
 <script src="/js/jquery.countdown.min.js"></script>
 <script src="/js/main.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-1.4.1.min.js"></script>
 
 </body>
 </html>

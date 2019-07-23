@@ -1,0 +1,59 @@
+package ru.itis.controllers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import ru.itis.models.Comment;
+import ru.itis.models.Gallery;
+import ru.itis.models.Photo;
+import ru.itis.models.User;
+import ru.itis.security.details.UserDetailsImpl;
+import ru.itis.services.CommentService;
+import ru.itis.services.PhotoService;
+import ru.itis.transfer.UserCommentDto;
+
+import static ru.itis.transfer.UserCommentDto.from;
+
+@RestController
+public class AjaxController {
+
+    @Autowired
+    private PhotoService photoService;
+
+    @Autowired
+    private CommentService commentService;
+
+    @PostMapping("/ajax/like")
+    public ResponseEntity<Object> like(@RequestParam(name = "id") Long photoId) {
+        Photo photo = photoService.findPhotoById(photoId).orElseThrow(IllegalArgumentException::new);
+        photoService.increaseLikes(photoId);
+        return ResponseEntity.ok(photoId);
+    }
+
+    @PostMapping("/ajax/delete")
+    public ResponseEntity<Object> delete(@RequestParam(name = "id") Long id) {
+        Photo photo = photoService.findPhotoById(id).orElseThrow(IllegalArgumentException::new);
+        Gallery gallery = photo.getGallery();
+        gallery.getPhotos().remove(photo);
+        photoService.deletePhoto(photo);
+        return ResponseEntity.ok(id);
+    }
+
+    @PostMapping("/ajax/addComment")
+    public ResponseEntity<Object> addComment(@RequestParam(name = "id") Long photoId, @RequestParam(name = "comment") String message,
+                                             Authentication authentication) {
+       Photo photo = photoService.findPhotoById(photoId).orElseThrow(IllegalArgumentException::new);
+        User currentUser = ((UserDetailsImpl) authentication.getPrincipal()).getUser();
+        Comment comment = Comment.builder()
+                .photo(photo)
+                .content(message)
+                .author(currentUser)
+                .build();
+        Comment savedComment = commentService.addComment(comment);
+        UserCommentDto dto = from(currentUser, savedComment);
+        return ResponseEntity.ok(dto);
+    }
+}

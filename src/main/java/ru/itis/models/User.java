@@ -31,4 +31,7 @@ public class User {
     @OneToMany(mappedBy = "owner")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Gallery> galleries;
+
+    @OneToMany(mappedBy = "author")
+    private List<Comment> comments;
 }
