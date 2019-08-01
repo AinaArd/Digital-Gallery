@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Builder
-@ToString(exclude = "gallery")
+@ToString(exclude = {"gallery", "comments"})
 public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

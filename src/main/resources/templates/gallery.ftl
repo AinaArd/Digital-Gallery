@@ -108,6 +108,28 @@
     <main>
         <a href="index.html" class="home-button"></a>
         <h1 class="mb-5">${gallery.name}</h1>
+
+        <#if add??>
+            <input type="submit" id="${gallery.id}" onclick="show(document.getElementById('addParticipants'))"
+                   value="Add participants">
+        </#if>
+        <br>
+
+        <form style="display: none;" method="post" id="addParticipants">
+            <ul>
+                <#if gallery.owner.followers??>
+                    <#list gallery.owner.followers as follower>
+                        <div>
+                            <a href="/profile/${follower.id}">${follower.name}</a>
+                            &nbsp;
+                            <input value="Add" id="${follower.id}" onclick="addParticipant(event)">
+                        </div>
+                    </#list>
+                </#if>
+            </ul>
+        </form>
+        <br>
+
         <div class="mb-5">
             <ul>
                 <#if gallery.photos??>
@@ -140,9 +162,11 @@
                                     <h5 class="card-header">Leave a Comment:</h5>
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+                                            <textarea class="form-control" id="comment" name="comment"
+                                                      rows="3"></textarea>
                                         </div>
-                                        <button type="submit" onclick="commentPhoto(event)" id="${photo.id}" name="comment-btn"
+                                        <button type="submit" onclick="commentPhoto(event)" id="${photo.id}"
+                                                name="comment-btn"
                                                 class="button-add">Comment
                                         </button>
                                     </div>

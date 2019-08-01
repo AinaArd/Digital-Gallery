@@ -13,7 +13,10 @@ import ru.itis.models.User;
 import ru.itis.security.details.UserDetailsImpl;
 import ru.itis.services.CommentService;
 import ru.itis.services.PhotoService;
+import ru.itis.services.UserService;
 import ru.itis.transfer.UserCommentDto;
+
+import java.util.List;
 
 import static ru.itis.transfer.UserCommentDto.from;
 
@@ -25,6 +28,9 @@ public class AjaxController {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/ajax/like")
     public ResponseEntity<Object> like(@RequestParam(name = "id") Long photoId) {
@@ -45,7 +51,7 @@ public class AjaxController {
     @PostMapping("/ajax/addComment")
     public ResponseEntity<Object> addComment(@RequestParam(name = "id") Long photoId, @RequestParam(name = "comment") String message,
                                              Authentication authentication) {
-       Photo photo = photoService.findPhotoById(photoId).orElseThrow(IllegalArgumentException::new);
+        Photo photo = photoService.findPhotoById(photoId).orElseThrow(IllegalArgumentException::new);
         User currentUser = ((UserDetailsImpl) authentication.getPrincipal()).getUser();
         Comment comment = Comment.builder()
                 .photo(photo)
@@ -55,5 +61,13 @@ public class AjaxController {
         Comment savedComment = commentService.addComment(comment);
         UserCommentDto dto = from(currentUser, savedComment);
         return ResponseEntity.ok(dto);
+    }
+
+    @PostMapping("/ajax/followUser")
+    public ResponseEntity<Object> followUser(@RequestParam(name = "follower") Long followerId, Authentication authentication) {
+        User currentUser = ((UserDetailsImpl) authentication.getPrincipal()).getUser();
+        User follower = userService.findById(followerId).orElseThrow(IllegalArgumentException::new);
+        userService.makeAFollow(currentUser, follower);
+        return ResponseEntity.ok(followerId);
     }
 }

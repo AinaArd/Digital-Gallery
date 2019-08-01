@@ -3,6 +3,6 @@
         <li><a href="/profile">Bio</a></li>
         <li><a href="/portfolio">Portfolio</a></li>
         <li><a href="resume.html">Resume</a></li>
-        <li><a href="contact.html">Contact</a></li>
+        <li><a href="/logout">Log out</a></li>
     </ul>
 </div>

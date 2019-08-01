@@ -1,9 +1,6 @@
 package ru.itis.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -16,6 +13,7 @@ import java.util.List;
 @Entity
 @Builder
 @Table(name = "\"user\"", schema = "public")
+@ToString(exclude = {"galleries", "comments", "followings", "followers"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,5 +31,19 @@ public class User {
     private List<Gallery> galleries;
 
     @OneToMany(mappedBy = "author")
+    @LazyCollection(LazyCollectionOption.TRUE)
     private List<Comment> comments;
+
+    @ManyToMany(mappedBy = "followers")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<User> followings;
+
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(
+            name="subscriptions",
+            joinColumns = @JoinColumn(name="subscriptor_id"),
+            inverseJoinColumns = @JoinColumn(name="subscriber_id")
+    )
+    private List<User> followers;
 }

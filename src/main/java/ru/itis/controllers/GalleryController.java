@@ -1,6 +1,7 @@
 package ru.itis.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.itis.forms.PhotoForm;
 import ru.itis.models.Gallery;
+import ru.itis.models.User;
+import ru.itis.security.details.UserDetailsImpl;
 import ru.itis.services.GalleryService;
 import ru.itis.services.PhotoService;
 
@@ -21,9 +24,13 @@ public class GalleryController {
     private PhotoService photoService;
 
     @GetMapping("/gallery/{gallery-id}")
-    public String getOneGalleryPage(ModelMap model, @PathVariable(name = "gallery-id") Long id) {
+    public String getOneGalleryPage(ModelMap model, @PathVariable(name = "gallery-id") Long id, Authentication authentication) {
         Gallery gallery = galleryService.findGalleryById(id).orElseThrow(IllegalArgumentException::new);
         model.addAttribute("gallery", gallery);
+        User currentUser = ((UserDetailsImpl) authentication.getPrincipal()).getUser();
+        if (galleryService.checkIfOwner(currentUser)) {
+            model.addAttribute("add", true);
+        }
         return "gallery";
     }
 
@@ -33,4 +40,11 @@ public class GalleryController {
         photoService.addPhoto(photoForm, gallery);
         return "redirect:{gallery-id}";
     }
+
+//    @PostMapping("/gallery/{gallery-id}")
+//    public String giveAccess(Authentication authentication, ModelMap model, @PathVariable(name = "gallery-id") Long id) {
+//        User currentUser = ((UserDetailsImpl) authentication.getPrincipal()).getUser();
+//
+//        return "redirect:{gallery-id}";
+//    }
 }
