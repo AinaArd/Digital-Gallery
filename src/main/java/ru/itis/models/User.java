@@ -31,7 +31,7 @@ public class User {
     private List<Gallery> ownGalleries;
 
     @OneToMany(mappedBy = "author")
-    @LazyCollection(LazyCollectionOption.TRUE)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Comment> comments;
 
     @ManyToMany(mappedBy = "followers")
@@ -48,6 +48,7 @@ public class User {
     private List<User> followers;
 
     @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "userId")
     private List<Gallery> galleries;
 }

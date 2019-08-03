@@ -29,11 +29,6 @@ public class GalleryServiceImpl implements GalleryService {
     }
 
     @Override
-    public boolean checkIfOwner(User currentUser) {
-        return usersRepository.checkIfOwner(currentUser.getId()).isPresent();
-    }
-
-    @Override
     public void addEditor(Gallery gallery, User editor) {
         if (!gallery.getEditors().contains(editor)) {
             gallery.getEditors().add(editor);

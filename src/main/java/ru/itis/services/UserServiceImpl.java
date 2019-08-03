@@ -9,6 +9,7 @@ import ru.itis.forms.RegisterForm;
 import ru.itis.models.Gallery;
 import ru.itis.models.Role;
 import ru.itis.models.User;
+import ru.itis.repositories.GalleryRepository;
 import ru.itis.repositories.UsersRepository;
 import ru.itis.security.details.UserDetailsImpl;
 import ru.itis.transfer.UserDto;
@@ -26,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private GalleryRepository galleryRepository;
 
     @Override
     public boolean signUp(RegisterForm registerForm) {
@@ -93,8 +97,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean checkTheRights(User currentUser, Gallery currentGallery) {
-        //            this user is th editor of this gallery
-        return currentGallery.getEditors().contains(currentUser) | currentGallery.getOwner() == currentUser;
+        //            this user is the editor of this gallery of the owner
+        if (currentGallery.getEditors().contains(currentUser)) {
+            return true;
+        } else return checkIfOwner(currentUser, currentGallery);
+    }
+
+    private boolean checkIfOwner(User currentUser, Gallery currentGallery) {
+        Long ownerId = galleryRepository.getOwner(currentGallery.getId());
+        return currentUser.getId().equals(ownerId);
     }
 
     private User findUserById(List<User> users, Long id) {

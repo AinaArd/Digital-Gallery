@@ -29,5 +29,6 @@ public class Gallery {
     private List<Photo> photos;
 
     @ManyToMany(mappedBy = "galleries")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<User> editors;
 }

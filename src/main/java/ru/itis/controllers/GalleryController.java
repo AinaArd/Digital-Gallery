@@ -34,7 +34,10 @@ public class GalleryController {
         User currentUser = ((UserDetailsImpl) authentication.getPrincipal()).getUser();
 
         if (userService.checkTheRights(currentUser, gallery)) {
+            System.out.println("hello");
             model.addAttribute("user", currentUser);
+        } else {
+            System.out.println("goodbye");
         }
         return "gallery";
     }
