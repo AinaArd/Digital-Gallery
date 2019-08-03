@@ -27,7 +27,7 @@
     <#include "menu.ftl">
 
     <main>
-        <a href="index.html" class="home-button"><span class="fa fa-home"></span></a>
+        <a href="/profile" class="home-button"><span class="fa fa-home"></span></a>
         <h1 class="mb-5">Portfolio</h1>
         <div class="mb-5">
             <ul class="portfolio-list">
