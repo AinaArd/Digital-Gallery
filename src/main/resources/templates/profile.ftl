@@ -31,18 +31,20 @@
         <h1 class="mb-0">Hi, I'm ${user.name}</h1>
         <div class="mb-5">
             <p class="lead mb-3">Web Designer &amp; Developer</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur, magnam aut animi, excepturi
-                voluptatum placeat dolor accusantium atque iure! Animi architecto eveniet voluptatum illo ut maiores
-                sed, autem pariatur culpa?</p>
-            <p>Commodi, neque debitis atque cum quod, culpa repellendus voluptatum voluptatem, molestiae dicta laborum
-                nulla corporis illum, ratione rerum quibusdam ea optio! Consectetur obcaecati facilis esse reprehenderit
-                ipsam, facere dolorem incidunt.</p>
+            <ul>
+                <#if user.galleries??>
+                    As editor in:
+                    <#list user.galleries as editorGallery>
+                        <li><a href="/gallery/${editorGallery.id}">${editorGallery.name}</a></li>
+                    </#list>
+                </#if>
+            </ul>
         </div>
 
         <#if otherUser??>
             <#if followed??>
                 <button disabled>Followed</button>
-                <#else>
+            <#else>
                 <div id="div${user.id}">
                     <input type="button" id="${user.id}" value="Follow" onclick="follow(event)">
                 </div>

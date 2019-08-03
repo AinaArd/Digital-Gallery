@@ -6,13 +6,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.itis.forms.RegisterForm;
+import ru.itis.models.Gallery;
 import ru.itis.models.Role;
 import ru.itis.models.User;
 import ru.itis.repositories.UsersRepository;
 import ru.itis.security.details.UserDetailsImpl;
+import ru.itis.transfer.UserDto;
 
 import java.util.List;
 import java.util.Optional;
+
+import static ru.itis.transfer.UserDto.from;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -48,7 +52,7 @@ public class UserServiceImpl implements UserService {
             usersRepository.save(userFollower);
             return true;
         } else {
-            userFollower.getFollowers().remove(findUserById(userFollower.getFollowers(),following.getId()));
+            userFollower.getFollowers().remove(findUserById(userFollower.getFollowers(), following.getId()));
             usersRepository.save(userFollower);
             return false;
         }
@@ -57,6 +61,40 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getCurrentUser(Authentication authentication) {
         return ((UserDetailsImpl) authentication.getPrincipal()).getUser();
+    }
+
+    @Override
+    public List<UserDto> findByNameOrLogin(String input, User user) {
+        List<UserDto> users;
+        UserDto currentUser = from(user);
+        users = usersRepository.findByNameContaining(input);
+        users.remove(currentUser);
+        return users;
+    }
+
+    @Override
+    public Optional<User> findByName(String name) {
+        return usersRepository.findByName(name);
+    }
+
+    @Override
+    public void addGallery(User editor, Gallery gallery) {
+        if (!editor.getGalleries().contains(gallery)) {
+            editor.getGalleries().add(gallery);
+        } else {
+            editor.getGalleries().remove(gallery);
+        }
+    }
+
+    @Override
+    public User save(User user) {
+        return usersRepository.save(user);
+    }
+
+    @Override
+    public boolean checkTheRights(User currentUser, Gallery currentGallery) {
+        //            this user is th editor of this gallery
+        return currentGallery.getEditors().contains(currentUser) | currentGallery.getOwner() == currentUser;
     }
 
     private User findUserById(List<User> users, Long id) {

@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Builder
 @Table(name = "\"user\"", schema = "public")
-@ToString(exclude = {"galleries", "comments", "followings", "followers"})
+@ToString(exclude = {"ownGalleries", "comments", "followings", "followers", "galleries"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class User {
 
     @OneToMany(mappedBy = "owner")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Gallery> galleries;
+    private List<Gallery> ownGalleries;
 
     @OneToMany(mappedBy = "author")
     @LazyCollection(LazyCollectionOption.TRUE)
@@ -46,4 +46,8 @@ public class User {
             inverseJoinColumns = @JoinColumn(name="subscriber_id")
     )
     private List<User> followers;
+
+    @ManyToMany
+    @JoinColumn(name = "userId")
+    private List<Gallery> galleries;
 }

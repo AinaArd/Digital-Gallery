@@ -107,27 +107,39 @@
 
     <main>
         <a href="index.html" class="home-button"></a>
-        <h1 class="mb-5">${gallery.name}</h1>
+        <h1 id="gallery-id" data-id="${gallery.id}" class="mb-5">${gallery.name}</h1>
 
-        <#if add??>
+
+        <ul>
+            <#if gallery.editors??>
+                Editors:
+                <#list gallery.editors as editor>
+                    <a href="/profile/${editor.id}">${editor.name}</a>
+                </#list>
+            <#else>
+                No editors in this gallery
+            </#if>
+        </ul>
+
+        <#if user??>
             <input type="submit" id="${gallery.id}" onclick="show(document.getElementById('addParticipants'))"
                    value="Add participants">
         </#if>
         <br>
+        <br>
 
-        <form style="display: none;" method="post" id="addParticipants">
-            <ul>
-                <#if gallery.owner.followers??>
-                    <#list gallery.owner.followers as follower>
-                        <div>
-                            <a href="/profile/${follower.id}">${follower.name}</a>
-                            &nbsp;
-                            <input value="Add" id="${follower.id}" onclick="addParticipant(event)">
-                        </div>
-                    </#list>
-                </#if>
-            </ul>
-        </form>
+        <div style="display: none;" id="addParticipants">
+            <div id="div-users">
+                <label for="search">Add
+                    <input id="search" oninput="addParticipants(event)">
+                </label>
+                <div id="result"></div>
+                <br>
+                <br>
+                <div id="user-candidates"></div>
+            </div>
+
+        </div>
         <br>
 
         <div class="mb-5">
@@ -178,10 +190,12 @@
                 </#if>
             </ul>
 
-            <br>
-            <input type="submit" value="Add photo" onclick="show(document.getElementById('addPhoto'))""/>
-            <br>
-            <br>
+            <#if user??>
+                <br>
+                <input type="submit" value="Add photo" onclick="show(document.getElementById('addPhoto'))""/>
+                <br>
+                <br>
+            </#if>
 
             <form method="post" id="addPhoto" style="display: none;" enctype="multipart/form-data">
                 <div class="add-photo">Add photo</div>
@@ -196,9 +210,9 @@
                 <br>
                 <br>
                 <input type="submit" value="Add"/>
-            </form>
-        </div>
+            </form
 
+        </div>
 
     </main>
 </div>
@@ -228,6 +242,7 @@
 <script src="/js/jquery.countdown.min.js"></script>
 <script src="/js/main.js"></script>
 <script type="application/javascript" src="/js/photos.js"></script>
+<script type="application/javascript" src="/js/users.js"></script>
 <script type="application/javascript" src="/js/comments.js"></script>
 <script src="https://code.jquery.com/jquery-migrate-1.4.1.min.js"></script>
 

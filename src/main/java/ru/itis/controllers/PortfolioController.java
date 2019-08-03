@@ -32,7 +32,7 @@ public class PortfolioController {
                 .name(galleryForm.getName())
                 .owner(currentUser)
                 .build();
-        currentUser.getGalleries().add(gallery);
+        currentUser.getOwnGalleries().add(gallery);
         Gallery newGallery = galleryService.addGallery(gallery);
         return "redirect:portfolio";
     }

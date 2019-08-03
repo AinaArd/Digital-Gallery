@@ -31,8 +31,8 @@
         <h1 class="mb-5">Portfolio</h1>
         <div class="mb-5">
             <ul class="portfolio-list">
-                <#if user.galleries??>
-                    <#list user.galleries as gallery>
+                <#if user.ownGalleries??>
+                    <#list user.ownGalleries as gallery>
                         <li>
                             <a href="/gallery/${gallery.id}">
                                 <img src="../images/done.png" alt="">

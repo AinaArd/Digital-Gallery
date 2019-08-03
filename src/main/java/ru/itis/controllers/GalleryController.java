@@ -13,6 +13,7 @@ import ru.itis.models.User;
 import ru.itis.security.details.UserDetailsImpl;
 import ru.itis.services.GalleryService;
 import ru.itis.services.PhotoService;
+import ru.itis.services.UserService;
 
 @Controller
 public class GalleryController {
@@ -23,13 +24,17 @@ public class GalleryController {
     @Autowired
     private PhotoService photoService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/gallery/{gallery-id}")
     public String getOneGalleryPage(ModelMap model, @PathVariable(name = "gallery-id") Long id, Authentication authentication) {
         Gallery gallery = galleryService.findGalleryById(id).orElseThrow(IllegalArgumentException::new);
         model.addAttribute("gallery", gallery);
         User currentUser = ((UserDetailsImpl) authentication.getPrincipal()).getUser();
-        if (galleryService.checkIfOwner(currentUser)) {
-            model.addAttribute("add", true);
+
+        if (userService.checkTheRights(currentUser, gallery)) {
+            model.addAttribute("user", currentUser);
         }
         return "gallery";
     }
@@ -48,3 +53,5 @@ public class GalleryController {
 //        return "redirect:{gallery-id}";
 //    }
 }
+
+//TODO: сделать так, чтобы можно было просматривать чужие галерии + редачить, если editor

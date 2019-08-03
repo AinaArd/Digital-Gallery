@@ -12,9 +12,11 @@ import ru.itis.models.Photo;
 import ru.itis.models.User;
 import ru.itis.security.details.UserDetailsImpl;
 import ru.itis.services.CommentService;
+import ru.itis.services.GalleryService;
 import ru.itis.services.PhotoService;
 import ru.itis.services.UserService;
 import ru.itis.transfer.UserCommentDto;
+import ru.itis.transfer.UserDto;
 
 import java.util.List;
 
@@ -31,6 +33,9 @@ public class AjaxController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private GalleryService galleryService;
 
     @PostMapping("/ajax/like")
     public ResponseEntity<Object> like(@RequestParam(name = "id") Long photoId) {
@@ -65,9 +70,27 @@ public class AjaxController {
 
     @PostMapping("/ajax/followUser")
     public ResponseEntity<Object> followUser(@RequestParam(name = "follower") Long followerId, Authentication authentication) {
-        User currentUser = ((UserDetailsImpl) authentication.getPrincipal()).getUser();
+        User currentUser = userService.getCurrentUser(authentication);
         User follower = userService.findById(followerId).orElseThrow(IllegalArgumentException::new);
         userService.makeAFollow(currentUser, follower);
         return ResponseEntity.ok(followerId);
+    }
+
+    @PostMapping("/ajax/addParticipant")
+    public ResponseEntity<Object> addParticipant(@RequestParam(name = "userName") String userName, @RequestParam(name = "galleryId")
+            Long galleryId) {
+        User editor = userService.findByName(userName).orElseThrow(IllegalArgumentException::new);
+        Gallery gallery = galleryService.findGalleryById(galleryId).orElseThrow(IllegalArgumentException::new);
+        galleryService.addEditor(gallery, editor);
+        userService.addGallery(editor, gallery);
+        User newEditor = userService.save(editor);
+        return ResponseEntity.ok(newEditor);
+    }
+
+    @PostMapping("/ajax/inviteUsersToGallery")
+    public ResponseEntity<Object> inviteUsers(@RequestParam(name = "search") String search, Authentication authentication) {
+        User currentUser = userService.getCurrentUser(authentication);
+        List<UserDto> userCandidates = userService.findByNameOrLogin(search, currentUser);
+        return ResponseEntity.ok(userCandidates);
     }
 }
