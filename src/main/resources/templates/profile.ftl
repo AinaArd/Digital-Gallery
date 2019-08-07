@@ -15,22 +15,37 @@
     <link rel="stylesheet" href="/fonts/ionicons/css/ionicons.min.css">
     <link rel="stylesheet" href="/fonts/fontawesome/css/font-awesome.min.css">
 
+    <link href="css/main.css" rel="stylesheet" media="all">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
     <!-- Theme Style -->
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/profileStyle.css">
 </head>
 <body>
 
-<div class="site-wrap">
+<div class="site-wrap profile">
 
     <a href="#" class="offcanvas-toggle js-offcanvas-toggle">Menu</a>
     <#include "menu.ftl">
 
-    <aside style="background-image: url(../images/profile_big.jpg);"></aside>
+    <aside>
+        <#if picture ??>
+            <img class="img-thumbnail" src="/load/${user.getPicturePath()}" alt="">
+        <#else>
+            <img class="img-thumbnail" src="/images/img_1.jpg" alt="">
+        </#if>
+    </aside>
     <main>
         <h1 class="mb-0">Hi, I'm ${user.name}</h1>
         <div class="mb-5">
-            <p class="lead mb-3">Web Designer &amp; Developer</p>
+            <p class="lead mb-3" style="color: #000000">Web Designer &amp; Developer</p>
+            <br>
+            <#if user.description??>
+                <p>${user.description}</p>
+            </#if>
+            <br>
             <ul>
                 <#if user.galleries??>
                     As editor in:
@@ -43,13 +58,47 @@
 
         <#if otherUser??>
             <#if followed??>
-                <button disabled>Followed</button>
-            <#else>
                 <div id="div${user.id}">
-                    <input type="button" id="${user.id}" value="Follow" onclick="follow(event)">
+                    <input type="button" id="unfollow-id" data-id="${user.id}" class="btn-gallery" value="Unfollow" onclick="unfollow(event)">
+                </div>
+            <#elseif notfollowed??>
+                <div id="div${user.id}">
+                    <input type="button" class="btn-gallery" id="follow-id" data-id="${user.id}" value="Follow" onclick="follow(event)">
                 </div>
             </#if>
         </#if>
+
+        <br>
+        <#if otherUser??>
+        <#else>
+            <label for="add-description">
+                <input type="submit" id="add-description" name="add-description" value="Add description"
+                       onclick="show(document.getElementById('description-form'))"/>
+            </label>
+            <br>
+            <label for="edit-photo">
+                <input type="submit" id="edit-photo" name="edit-photo" value="Change photo"
+                       onclick="show(document.getElementById('user-photo'))"/>
+            </label>
+            <br>
+            <br>
+        </#if>
+
+        <form method="post" style="display: none;" id="description-form">
+            <div class="form-group">
+                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+            </div>
+            <input name="description" type="submit" value="Save"/>
+        </form>
+
+        <br>
+        <br>
+
+        <form method="post" style="display: none;" id="user-photo" enctype="multipart/form-data">
+            <input type="file" name="photo" id="photo">
+            <br>
+            <input type="submit" name="photo" value="Save"/>
+        </form>
 
     </main>
 </div>
@@ -63,6 +112,14 @@
     </svg>
 </div>
 
+<script>
+    function show(div) {
+        if (div.style.display === "none") {
+            div.style.display = "block";
+        } else
+            div.style.display = "none"
+    }
+</script>
 <script type="application/javascript" src="/js/jquery-3.2.1.min.js"></script>
 <script type="application/javascript" src="/js/popper.min.js"></script>
 <script type="application/javascript" src="/js/bootstrap.min.js"></script>

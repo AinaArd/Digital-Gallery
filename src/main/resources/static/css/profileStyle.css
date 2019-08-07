@@ -1,0 +1,42 @@
+.profile input[type=submit],
+.profile button {
+    border: none;
+    padding: 8px 10px 8px 10px;
+    background: #B6B2FF;
+    color: #fff;
+    box-shadow: 1px 1px 4px #DADADA;
+    -moz-box-shadow: 1px 1px 4px #DADADA;
+    -webkit-box-shadow: 1px 1px 4px #DADADA;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+}
+
+.profile input[type=submit],
+.profile button:hover {
+    background: #a790ff;
+    color: #fff;
+}
+
+.profile img {
+    height: 100%;
+    width: fit-content;
+}
+
+.btn-gallery {
+    border: none;
+    padding: 8px 10px 8px 10px;
+    background: #B6B2FF;
+    color: #fff;
+    box-shadow: 1px 1px 4px #DADADA;
+    -moz-box-shadow: 1px 1px 4px #DADADA;
+    -webkit-box-shadow: 1px 1px 4px #DADADA;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+}
+
+.btn-gallery:hover {
+    background: #a790ff;
+    color: #fff;
+}

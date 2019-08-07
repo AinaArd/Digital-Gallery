@@ -1,83 +1,3 @@
-<#--<html>-->
-<#--<head>-->
-<#--    <link href="/css/bootstrap.min.css" rel="stylesheet">-->
-<#--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">-->
-<#--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
-<#--    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
-<#--    <script src="//ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/jquery-ui.min.js"></script>-->
-<#--    <link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/themes/sunny/jquery-ui.css">-->
-<#--    <link href="/css/photoStyles.css" rel="stylesheet" type="text/css">-->
-<#--    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800|Playfair+Display:,300, 400, 700"-->
-<#--          rel="stylesheet">-->
-
-<#--    <link rel="stylesheet" href="css/animate.css">-->
-<#--    <link rel="stylesheet" href="css/owl.carousel.min.css">-->
-<#--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mediaelement@4.2.7/build/mediaelementplayer.min.css">-->
-
-<#--    <link rel="stylesheet" href="fonts/ionicons/css/ionicons.min.css">-->
-<#--    <link rel="stylesheet" href="fonts/fontawesome/css/font-awesome.min.css">-->
-
-<#--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>-->
-<#--</head>-->
-
-<#--${gallery.name}-->
-<#--<body>-->
-<#--<div class="site-wrap">-->
-<#--    <a href="#" class="offcanvas-toggle js-offcanvas-toggle">Menu</a>-->
-<#--    <#include "menu.ftl">-->
-
-<#--    <ul>-->
-<#--        <#if gallery.photos??>-->
-<#--            <#list gallery.photos as photo>-->
-<#--                <li id="li${photo.id}">-->
-<#--                    ${photo.name}-->
-<#--                    <br>-->
-<#--                    <img class="pic img-thumbnail" src="/load/${photo.getPhotoPath()}"-->
-<#--                         alt="">-->
-<#--                    <br>-->
-<#--                    <i id="like${photo.id}">${photo.likes}</i>&nbsp;Likes-->
-<#--                    <br>-->
-<#--                    <button id="${photo.id}" onclick="like(event)">Like</button>-->
-<#--                    <button id="${photo.id}" onclick="deletePhoto(event)">Delete</button>-->
-<#--                </li>-->
-<#--                <br>-->
-<#--            </#list>-->
-<#--        </#if>-->
-<#--    </ul>-->
-
-<#--    <br>-->
-<#--    <input type="submit" value="Add photo" onclick="show(document.getElementById('addPhoto'))""/>-->
-<#--    <br>-->
-<#--    <br>-->
-
-<#--    <form method="post" id="addPhoto" style="display: none;" enctype="multipart/form-data">-->
-<#--        <div class="add-photo">Add photo</div>-->
-<#--        <label for="name">Name-->
-<#--            <input class="input-field" type="text" id="name" name="name">-->
-<#--        </label>-->
-<#--        <label for="text">Description-->
-<#--            <input class="textarea-field" id="description" name="description">-->
-<#--        </label>-->
-
-<#--        <input type="file" name="file" id="file">-->
-<#--        <br>-->
-<#--        <input type="submit" value="Add"/>-->
-<#--    </form>-->
-<#--</div>-->
-
-<#--<script>-->
-<#--    function show(div) {-->
-<#--        if (div.style.display === "none") {-->
-<#--            div.style.display = "block";-->
-<#--        } else-->
-<#--            div.style.display = "none"-->
-<#--    }-->
-<#--</script>-->
-<#--<script src="https://code.jquery.com/jquery-migrate-1.4.1.min.js"></script>-->
-<#--<script type="application/javascript" src="/js/photos.js"></script>-->
-<#--</body>-->
-<#--</html>-->
-
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -97,6 +17,7 @@
 
     <!-- Theme Style -->
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/profileStyle.css">
 </head>
 <body>
 
@@ -106,7 +27,7 @@
     <#include "menu.ftl">
 
     <main>
-        <a href="index.html" class="home-button"></a>
+        <a href="/profile" class="home-button"></a>
         <h1 id="gallery-id" data-id="${gallery.id}" class="mb-5">${gallery.name}</h1>
 
 
@@ -122,7 +43,7 @@
         </ul>
 
         <#if user??>
-            <input type="submit" id="${gallery.id}" onclick="show(document.getElementById('addParticipants'))"
+            <input class="btn-gallery" type="submit" id="${gallery.id}" onclick="show(document.getElementById('addParticipants'))"
                    value="Add participants">
         </#if>
         <br>
@@ -154,10 +75,12 @@
                             <img class="img-thumbnail" src="/load/${photo.getPhotoPath()}"
                                  alt="">
                             <br>
+                            <br>
                             <i id="like${photo.id}">${photo.likes}</i>&nbsp;Likes
                             <br>
-                            <button id="${photo.id}" onclick="like(event)">Like</button>
-                            <button id="${photo.id}" onclick="deletePhoto(event)">Delete</button>
+                            <br>
+                            <button class="btn-gallery" id="${photo.id}" onclick="like(event)">Like</button>
+                            <button class="btn-gallery" id="${photo.id}" onclick="deletePhoto(event)">Delete</button>
                             <div>
                                 <#if photo.comments??>
                                     <ul id="ul-id${photo.id}">
@@ -177,10 +100,8 @@
                                             <textarea class="form-control" id="comment" name="comment"
                                                       rows="3"></textarea>
                                         </div>
-                                        <button type="submit" onclick="commentPhoto(event)" id="${photo.id}"
-                                                name="comment-btn"
-                                                class="button-add">Comment
-                                        </button>
+                                        <button class="btn-gallery" type="submit" onclick="commentPhoto(event)" id="${photo.id}"
+                                                name="comment-btn">Comment</button>
                                     </div>
                                 </div>
                             </div>
@@ -192,7 +113,7 @@
 
             <#if user??>
                 <br>
-                <input type="submit" value="Add photo" onclick="show(document.getElementById('addPhoto'))""/>
+                <input class="btn-gallery" type="submit" value="Add photo" onclick="show(document.getElementById('addPhoto'))""/>
                 <br>
                 <br>
             </#if>
@@ -209,7 +130,7 @@
                 <input type="file" name="file" id="file">
                 <br>
                 <br>
-                <input type="submit" value="Add"/>
+                <input type="submit" class="btn-gallery" value="Add"/>
             </form
 
         </div>

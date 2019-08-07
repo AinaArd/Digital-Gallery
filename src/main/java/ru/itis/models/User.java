@@ -22,6 +22,8 @@ public class User {
     private String name;
     private String login;
     private String hashPassword;
+    private String picturePath;
+    private String description;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -34,10 +36,6 @@ public class User {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Comment> comments;
 
-    @ManyToMany(mappedBy = "followers")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<User> followings;
-
     @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
@@ -45,6 +43,10 @@ public class User {
             joinColumns = @JoinColumn(name="subscriptor_id"),
             inverseJoinColumns = @JoinColumn(name="subscriber_id")
     )
+    private List<User> followings;
+
+    @ManyToMany(mappedBy = "followings")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<User> followers;
 
     @ManyToMany

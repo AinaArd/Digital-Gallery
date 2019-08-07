@@ -34,9 +34,9 @@ public class GalleryController {
         User currentUser = ((UserDetailsImpl) authentication.getPrincipal()).getUser();
 
         if (userService.checkTheRights(currentUser, gallery)) {
-            System.out.println("hello");
             model.addAttribute("user", currentUser);
         } else {
+//            TODO: do not give rights
             System.out.println("goodbye");
         }
         return "gallery";
@@ -57,4 +57,3 @@ public class GalleryController {
 //    }
 }
 
-//TODO: сделать так, чтобы можно было просматривать чужие галерии + редачить, если editor

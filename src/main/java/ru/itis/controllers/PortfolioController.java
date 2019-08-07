@@ -26,7 +26,7 @@ public class PortfolioController {
     }
 
     @PostMapping("/portfolio")
-    public String addGallery(ModelMap model, GalleryForm galleryForm, Authentication authentication) {
+    public String addGallery(GalleryForm galleryForm, Authentication authentication) {
         User currentUser = ((UserDetailsImpl) authentication.getPrincipal()).getUser();
         Gallery gallery = Gallery.builder()
                 .name(galleryForm.getName())

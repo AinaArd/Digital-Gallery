@@ -1,6 +1,7 @@
 package ru.itis.services;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.web.multipart.MultipartFile;
 import ru.itis.forms.RegisterForm;
 import ru.itis.models.Gallery;
 import ru.itis.models.User;
@@ -28,4 +29,8 @@ public interface UserService {
     User save(User user);
 
     boolean checkTheRights(User currentUser, Gallery currentGallery);
+
+    void makeUnfollow(User currentUser, User userToUnfollow);
+
+    void changePicture(MultipartFile file, User currentUser);
 }

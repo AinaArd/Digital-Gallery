@@ -18,10 +18,11 @@
 
     <!-- Theme Style -->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/css/profileStyle.css">
 </head>
 <body>
 
-<div class="site-wrap">
+<div class="site-wrap profile">
 
     <a href="#" class="offcanvas-toggle js-offcanvas-toggle">Menu</a>
     <#include "menu.ftl">
@@ -38,7 +39,7 @@
                                 <img src="../images/done.png" alt="">
                                 <div class="text">
                                     <h3>${gallery.name}</h3>
-                                    <span>Visit Website</span>
+                                    <span>Visit</span>
                                 </div>
                             </a>
                         </li>

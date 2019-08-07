@@ -15,9 +15,11 @@ import ru.itis.services.CommentService;
 import ru.itis.services.GalleryService;
 import ru.itis.services.PhotoService;
 import ru.itis.services.UserService;
+import ru.itis.transfer.FollowDto;
 import ru.itis.transfer.UserCommentDto;
 import ru.itis.transfer.UserDto;
 
+import javax.xml.ws.Response;
 import java.util.List;
 
 import static ru.itis.transfer.UserCommentDto.from;
@@ -39,7 +41,6 @@ public class AjaxController {
 
     @PostMapping("/ajax/like")
     public ResponseEntity<Object> like(@RequestParam(name = "id") Long photoId) {
-        Photo photo = photoService.findPhotoById(photoId).orElseThrow(IllegalArgumentException::new);
         photoService.increaseLikes(photoId);
         return ResponseEntity.ok(photoId);
     }
@@ -71,9 +72,10 @@ public class AjaxController {
     @PostMapping("/ajax/followUser")
     public ResponseEntity<Object> followUser(@RequestParam(name = "follower") Long followerId, Authentication authentication) {
         User currentUser = userService.getCurrentUser(authentication);
-        User follower = userService.findById(followerId).orElseThrow(IllegalArgumentException::new);
-        userService.makeAFollow(currentUser, follower);
-        return ResponseEntity.ok(followerId);
+        User userToFollow = userService.findById(followerId).orElseThrow(IllegalArgumentException::new);
+        userService.makeAFollow(currentUser, userToFollow);
+        FollowDto dto = FollowDto.from(userToFollow);
+        return ResponseEntity.ok(dto);
     }
 
     @PostMapping("/ajax/addParticipant")
@@ -93,4 +95,14 @@ public class AjaxController {
         List<UserDto> userCandidates = userService.findByNameOrLogin(search, currentUser);
         return ResponseEntity.ok(userCandidates);
     }
+
+    @PostMapping("/ajax/unfollowUser")
+    public ResponseEntity<Object> unfollowUser(@RequestParam(name = "followingId") Long followingId, Authentication authentication) {
+        User userToUnfollow = userService.findById(followingId).orElseThrow(IllegalArgumentException::new);
+        User currentUser = userService.getCurrentUser(authentication);
+        userService.makeUnfollow(currentUser, userToUnfollow);
+        return ResponseEntity.ok().build();
+    }
 }
+
+//TODO: fix unfollow and make search

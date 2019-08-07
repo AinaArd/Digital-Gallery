@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ru.itis.forms.RegisterForm;
 import ru.itis.models.Gallery;
 import ru.itis.models.Role;
@@ -13,6 +14,7 @@ import ru.itis.repositories.GalleryRepository;
 import ru.itis.repositories.UsersRepository;
 import ru.itis.security.details.UserDetailsImpl;
 import ru.itis.transfer.UserDto;
+import ru.itis.utils.FileDownloader;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +33,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private GalleryRepository galleryRepository;
 
+    @Autowired
+    private FileDownloader fileDownloader;
+
     @Override
     public boolean signUp(RegisterForm registerForm) {
         String hashPassword = passwordEncoder.encode(registerForm.getPassword());
@@ -47,19 +52,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findById(Long id) {
         return usersRepository.findById(id);
-    }
-
-    @Override
-    public boolean makeAFollow(User userFollower, User following) {
-        if (!userFollower.getFollowers().contains(following)) {
-            userFollower.getFollowers().add(following);
-            usersRepository.save(userFollower);
-            return true;
-        } else {
-            userFollower.getFollowers().remove(findUserById(userFollower.getFollowers(), following.getId()));
-            usersRepository.save(userFollower);
-            return false;
-        }
     }
 
     @Override
@@ -101,6 +93,35 @@ public class UserServiceImpl implements UserService {
         if (currentGallery.getEditors().contains(currentUser)) {
             return true;
         } else return checkIfOwner(currentUser, currentGallery);
+    }
+
+    @Override
+    public void makeUnfollow(User currentUser, User userToUnfollow) {
+        currentUser.getFollowings().remove(userToUnfollow);
+        usersRepository.save(currentUser);
+    }
+
+    @Override
+    public void changePicture(MultipartFile file, User currentUser) {
+        String photoPath = fileDownloader.upload(file, currentUser.getName()).orElseThrow(IllegalArgumentException::new);
+        currentUser.setPicturePath(photoPath);
+        usersRepository.save(currentUser);
+
+    }
+
+    @Override
+    public boolean makeAFollow(User userFollower, User following) {
+        if (!userFollower.getFollowings().contains(following)) {
+            userFollower.getFollowings().add(following);
+            usersRepository.save(userFollower);
+            return true;
+        } else if (userFollower.getFollowings().contains(following)) {
+//            TODO: fix remove()
+            userFollower.getFollowings().remove(findUserById(userFollower.getFollowings(), following.getId()));
+            usersRepository.save(userFollower);
+            return false;
+        }
+        return false;
     }
 
     private boolean checkIfOwner(User currentUser, Gallery currentGallery) {

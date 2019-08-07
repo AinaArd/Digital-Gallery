@@ -18,7 +18,7 @@ function addParticipants() {
 
                     var buttonAdd = document.createElement("button");
                     buttonAdd.innerText = "Add";
-                    buttonAdd.className = 'button-add';
+                    buttonAdd.className = 'btn-gallery';
                     buttonAdd.onclick = function add() {
 
                         buttonAdd.innerHTML = "Added";

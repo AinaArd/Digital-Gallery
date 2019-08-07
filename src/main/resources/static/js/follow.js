@@ -1,16 +1,15 @@
 function follow(event) {
-    var follower = event.target.id;
+    var followBtn = document.getElementById("follow-id");
+    var followerId = followBtn.dataset.id;
     $.ajax({
         url: "/ajax/followUser",
         type: "post",
         data: {
-            "follower": follower
+            "follower": followerId
         },
-        success: function (followerId) {
-            // var followDiv = document.getElementById("div" + followerId);
-            var followButton = document.getElementById(followerId);
-            followButton.value = "Followed";
-            // followDiv.remove();
+        success: function (data) {
+            followBtn.disable();
+            followBtn.value = "Followed";
         }
     })
 }
